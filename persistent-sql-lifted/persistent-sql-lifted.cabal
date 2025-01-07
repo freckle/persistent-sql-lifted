@@ -1,6 +1,6 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.36.0.
+-- This file has been generated from package.yaml by hpack version 0.37.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -16,8 +16,8 @@ description:    This package introduces two classes: MonadSqlBackend for monadic
                 to a MonadSqlBackend m constraint rather than "ReaderT backend", and wrapped in
                 checkpointCallStack so that exceptions will include call stacks.
 category:       Database
-homepage:       https://github.com/freckle/freckle-app#readme
-bug-reports:    https://github.com/freckle/freckle-app/issues
+homepage:       https://github.com/freckle/persistent-sql-lifted#readme
+bug-reports:    https://github.com/freckle/persistent-sql-lifted/issues
 maintainer:     Freckle Education
 license:        MIT
 license-file:   LICENSE
@@ -30,7 +30,7 @@ extra-doc-files:
 
 source-repository head
   type: git
-  location: https://github.com/freckle/freckle-app
+  location: https://github.com/freckle/persistent-sql-lifted
 
 library
   exposed-modules:
