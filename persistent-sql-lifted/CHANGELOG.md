@@ -1,4 +1,4 @@
-## [_Unreleased_](https://github.com/freckle/freckle-app/compare/persistent-sql-lifted-v0.1.0.0...main)
+## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.1.0.0...main)
 
 ## [v0.0.0.1](https://github.com/freckle/freckle-app/compare/persistent-sql-lifted-v0.0.0.0...persistent-sql-lifted-v0.1.0.0)
 
