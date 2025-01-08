@@ -1,0 +1,7 @@
+resolver: lts-20.26
+
+packages:
+  - persistent-sql-lifted
+
+extra-deps:
+  - persistent-2.14.0.1
