@@ -6,7 +6,7 @@ This package introduces two classes:
 
 - `MonadSqlBackend db m`, for monadic contexts `m` in which we can execute a SQL
   transaction of type `db a` and get a result `m a`. (The type `db` should have an
-  instance of `MonadSqlBackend.)
+  instance of `MonadSqlBackend`.)
 
 Additionally, this package provides variants of query-running utilities from
 [persistent] and [esqueleto] which are
