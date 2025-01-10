@@ -85,6 +85,12 @@ module Database.Persist.Sql.Lifted
   , deleteWhere
   , deleteCount
 
+    -- * Transactions
+  , transactionSave
+  , transactionSaveWithIsolation
+  , transactionUndo
+  , transactionUndoWithIsolation
+
     -- * Rendering queries to text
   , renderQueryDelete
   , renderQueryInsertInto

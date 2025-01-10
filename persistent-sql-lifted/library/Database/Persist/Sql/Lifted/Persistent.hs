@@ -37,6 +37,10 @@ module Database.Persist.Sql.Lifted.Persistent
   , selectKeys
   , selectKeysList
   , selectList
+  , transactionSave
+  , transactionSaveWithIsolation
+  , transactionUndo
+  , transactionUndoWithIsolation
   , update
   , updateGet
   , updateWhere
@@ -66,6 +70,8 @@ import Database.Persist
   )
 import Database.Persist.Class qualified as P
 import Database.Persist.Class.PersistEntity (SafeToInsert)
+import Database.Persist.Sql (IsolationLevel)
+import Database.Persist.Sql qualified as P
 import Database.Persist.Sql.Lifted.Core (MonadSqlBackend, SqlBackend, liftSql)
 import GHC.Stack (HasCallStack)
 
@@ -556,6 +562,32 @@ selectList
   -> m [Entity a]
   -- ^ Entities corresponding to the filters and options provided
 selectList fs os = liftSql $ P.selectList fs os
+
+-- | Commit the current transaction and begin a new one
+transactionSave :: forall m. (MonadSqlBackend m, HasCallStack) => m ()
+transactionSave = liftSql P.transactionSave
+
+-- | Commit the current transaction and begin a new one
+transactionSaveWithIsolation
+  :: forall m
+   . (MonadSqlBackend m, HasCallStack)
+  => IsolationLevel
+  -- ^ Isolation level
+  -> m ()
+transactionSaveWithIsolation il = liftSql $ transactionSaveWithIsolation il
+
+-- | Roll back the current transaction and begin a new one
+transactionUndo :: forall m. (MonadSqlBackend m, HasCallStack) => m ()
+transactionUndo = liftSql transactionUndo
+
+-- | Roll back the current transaction and begin a new one
+transactionUndoWithIsolation
+  :: forall m
+   . (MonadSqlBackend m, HasCallStack)
+  => IsolationLevel
+  -- ^ Isolation level
+  -> m ()
+transactionUndoWithIsolation il = liftSql $ transactionUndoWithIsolation il
 
 -- | Update individual fields on a specific record
 update

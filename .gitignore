@@ -4,3 +4,4 @@
 stack-*.lock
 stack.*.lock
 .direnv
+.envrc
