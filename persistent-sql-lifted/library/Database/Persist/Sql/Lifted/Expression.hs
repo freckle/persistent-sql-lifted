@@ -76,7 +76,6 @@ module Database.Persist.Sql.Lifted.Expression
     -- * OrderBy
   , asc
   , desc
-  , rand
 
     -- * Projection
   , (^.)

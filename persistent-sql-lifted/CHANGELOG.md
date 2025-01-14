@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.2.0.0...main)
+## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.3.0.0...main)
+
+## [v0.3.0.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.2.0.0...persistent-sql-lifted-v0.3.0.0)
+
+Remove `rand`; supports `esqueleto-3.6`.
 
 ## [v0.2.0.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.1.1.0...persistent-sql-lifted-v0.2.0.0)
 
