@@ -8,14 +8,18 @@ module Database.Persist.Sql.Lifted.Persistent
   , delete
   , deleteBy
   , deleteWhere
+  , deleteWhereCount
   , exists
+  , existsBy
   , get
   , getBy
   , getByValue
   , getEntity
+  , getFieldName
   , getJust
   , getJustEntity
   , getMany
+  , getTableName
   , insert
   , insert_
   , insertBy
@@ -26,15 +30,18 @@ module Database.Persist.Sql.Lifted.Persistent
   , insertMany_
   , insertRecord
   , insertUnique
+  , insertUnique_
   , insertUniqueEntity
   , onlyUnique
   , putMany
+  , rawExecute
+  , rawExecuteCount
+  , rawSql
   , replace
   , replaceUnique
   , repsert
   , repsertMany
   , selectFirst
-  , selectKeys
   , selectKeysList
   , selectList
   , transactionSave
@@ -44,33 +51,35 @@ module Database.Persist.Sql.Lifted.Persistent
   , update
   , updateGet
   , updateWhere
+  , updateWhereCount
   , upsert
   , upsertBy
   ) where
 
-import Conduit (ConduitT, MonadResource, transPipe)
 import Data.Bool (Bool)
 import Data.Either (Either)
 import Data.Eq (Eq)
 import Data.Function (($))
-import Data.Int (Int)
+import Data.Int (Int, Int64)
 import Data.Map.Strict (Map)
 import Data.Maybe (Maybe)
 #if MIN_VERSION_base(4,17,0)
 import Data.Type.Equality (type (~))
 #endif
+import Data.Text (Text)
 import Database.Persist
   ( AtLeastOneUniqueKey
   , Entity
   , Filter
   , OnlyOneUniqueKey
   , PersistEntity (..)
+  , PersistValue
   , SelectOpt
   , Update
   )
 import Database.Persist.Class qualified as P
 import Database.Persist.Class.PersistEntity (SafeToInsert)
-import Database.Persist.Sql (IsolationLevel)
+import Database.Persist.Sql (IsolationLevel, RawSql)
 import Database.Persist.Sql qualified as P
 import Database.Persist.Sql.Lifted.Core (MonadSqlBackend, SqlBackend, liftSql)
 import GHC.Stack (HasCallStack)
@@ -160,6 +169,20 @@ deleteWhere
   -> m ()
 deleteWhere fs = liftSql $ P.deleteWhere fs
 
+-- | Delete all records matching the given criteria
+deleteWhereCount
+  :: forall a m
+   . ( PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
+     , MonadSqlBackend m
+     , HasCallStack
+     )
+  => [Filter a]
+  -- ^ If you provide multiple values in the list, the conditions are ANDed together.
+  -> m Int64
+  -- ^ The number of rows affected
+deleteWhereCount fs = liftSql $ P.deleteWhereCount fs
+
 -- | Check if there is at least one record fulfilling the given criteria
 exists
   :: forall a m
@@ -172,6 +195,18 @@ exists
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
   -> m Bool
 exists fs = liftSql $ P.exists fs
+
+-- | Check if a record with this unique key exists
+existsBy
+  :: forall a m
+   . ( PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
+     , MonadSqlBackend m
+     , HasCallStack
+     )
+  => Unique a
+  -> m Bool
+existsBy u = liftSql $ P.existsBy u
 
 -- | Get a record by identifier, if available
 get
@@ -224,6 +259,18 @@ getEntity
   -> m (Maybe (Entity a))
 getEntity k = liftSql $ P.getEntity k
 
+-- | Get the SQL string for the field that an 'EntityField' represents
+getFieldName
+  :: forall a t m
+   . ( PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
+     , MonadSqlBackend m
+     , HasCallStack
+     )
+  => EntityField a t
+  -> m Text
+getFieldName f = liftSql $ P.getFieldName f
+
 -- | Get a record by identifier, if available, for a non-null (not 'Maybe') foreign key
 --
 -- Unsafe unless your database is enforcing that the foreign key is valid.
@@ -263,6 +310,11 @@ getMany
   => [Key a]
   -> m (Map (Key a) a)
 getMany ks = liftSql $ P.getMany ks
+
+-- | Get the SQL string for the table that a 'PersistEntity' represents
+getTableName
+  :: forall a m. (PersistEntity a, MonadSqlBackend m, HasCallStack) => a -> m Text
+getTableName x = liftSql $ P.getTableName x
 
 -- | Create a new record in the database
 insert
@@ -400,6 +452,21 @@ insertUnique
 insertUnique a = liftSql $ P.insertUnique a
 
 -- | Create a new record in the database
+insertUnique_
+  :: forall a m
+   . ( PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
+     , SafeToInsert a
+     , MonadSqlBackend m
+     , HasCallStack
+     )
+  => a
+  -> m (Maybe ())
+  -- ^ (), or 'Nothing' when the record couldn't be inserted because of a
+  --   uniqueness constraint
+insertUnique_ a = liftSql $ P.insertUnique_ a
+
+-- | Create a new record in the database
 insertUniqueEntity
   :: forall a m
    . ( PersistEntity a
@@ -442,6 +509,39 @@ putMany
   -- ^ A list of the records you want to insert or replace.
   -> m ()
 putMany as = liftSql $ P.putMany as
+
+-- | Execute a raw SQL statement
+rawExecute
+  :: forall m
+   . (MonadSqlBackend m, HasCallStack)
+  => Text
+  -- ^ SQL statement, possibly with placeholders
+  -> [PersistValue]
+  -- ^ Values to fill the placeholders
+  -> m ()
+rawExecute t vs = liftSql $ P.rawExecute t vs
+
+-- | Execute a raw SQL statement
+rawExecuteCount
+  :: forall m
+   . (MonadSqlBackend m, HasCallStack)
+  => Text
+  -- ^ SQL statement, possibly with placeholders
+  -> [PersistValue]
+  -- ^ Values to fill the placeholders
+  -> m Int64
+  -- ^ The number of rows modified
+rawExecuteCount t vs = liftSql $ P.rawExecuteCount t vs
+
+rawSql
+  :: forall a m
+   . (RawSql a, MonadSqlBackend m, HasCallStack)
+  => Text
+  -- ^ SQL statement, possibly with placeholders
+  -> [PersistValue]
+  -- ^ Values to fill the placeholders
+  -> m [a]
+rawSql sql vals = liftSql $ P.rawSql sql vals
 
 -- | Replace the record in the database with the given key
 --
@@ -518,22 +618,6 @@ selectFirst
   -> [SelectOpt a]
   -> m (Maybe (Entity a))
 selectFirst fs os = liftSql $ P.selectFirst fs os
-
--- | Get the 'Key's of all records matching the given criteria
-selectKeys
-  :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
-     , MonadSqlBackend m
-     , MonadResource m
-     , HasCallStack
-     )
-  => [Filter a]
-  -- ^ If you provide multiple values in the list, the conditions are ANDed together.
-  -> [SelectOpt a]
-  -> ConduitT () (Key a) m ()
-  -- ^ Keys corresponding to the filters and options provided
-selectKeys fs os = transPipe liftSql $ P.selectKeys fs os
 
 -- | Get the 'Key's of all records matching the given criteria
 selectKeysList
@@ -630,6 +714,21 @@ updateWhere
   -> [Update a]
   -> m ()
 updateWhere fs us = liftSql $ P.updateWhere fs us
+
+-- | Update individual fields on any record matching the given criteria
+updateWhereCount
+  :: forall a m
+   . ( PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
+     , MonadSqlBackend m
+     , HasCallStack
+     )
+  => [Filter a]
+  -- ^ If you provide multiple values in the list, the conditions are ANDed together.
+  -> [Update a]
+  -> m Int64
+  -- ^ The number of rows affected
+updateWhereCount fs us = liftSql $ P.updateWhereCount fs us
 
 -- | Update based on a uniqueness constraint or insert:
 --
