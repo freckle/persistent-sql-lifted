@@ -1,4 +1,20 @@
-## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.3.0.0...main)
+## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.0.0...main)
+
+## [v0.4.0.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.3.0.0...persistent-sql-lifted-v0.4.0.0)
+
+Remove `selectKeys` because Persistent's Conduit-based utilities are of dubious correctness.
+
+Add:
+
+- `deleteWhereCount`
+- `existsBy`
+- `getFieldName`
+- `getTableName`
+- `insertUnique_`
+- `rawExecute`
+- `rawExecuteCount`
+- `rawSql`
+- `updateWhereCount`
 
 ## [v0.3.0.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.2.0.0...persistent-sql-lifted-v0.3.0.0)
 

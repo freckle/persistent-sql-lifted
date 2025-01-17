@@ -1,5 +1,5 @@
 name: persistent-sql-lifted
-version: 0.3.0.0
+version: 0.4.0.0
 
 maintainer: Freckle Education
 category: Database
@@ -59,7 +59,6 @@ library:
   source-dirs: library
   dependencies:
     - annotated-exception
-    - conduit
     - containers
     - esqueleto
     - mtl
