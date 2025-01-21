@@ -1,2 +1,4 @@
 cradle:
   stack:
+    - path: "persistent-sql-lifted/library"
+      component: "persistent-sql-lifted:lib"

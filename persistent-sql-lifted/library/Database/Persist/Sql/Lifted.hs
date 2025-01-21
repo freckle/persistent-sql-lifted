@@ -34,13 +34,13 @@ module Database.Persist.Sql.Lifted
   , select
   , selectOne
   , selectFirst
-  , selectKeys
   , selectKeysList
   , selectList
 
     -- * Selecting counts/existence
   , count
   , exists
+  , existsBy
 
     -- * Inserting
   , insertSelect
@@ -55,6 +55,7 @@ module Database.Persist.Sql.Lifted
   , insertMany_
   , insertRecord
   , insertUnique
+  , insertUnique_
   , insertUniqueEntity
 
     -- * Updating
@@ -63,6 +64,7 @@ module Database.Persist.Sql.Lifted
   , update'
   , updateGet
   , updateWhere
+  , updateWhereCount
 
     -- * Insert/update combinations
   , replace
@@ -84,12 +86,22 @@ module Database.Persist.Sql.Lifted
   , deleteBy
   , deleteWhere
   , deleteCount
+  , deleteWhereCount
 
     -- * Transactions
   , transactionSave
   , transactionSaveWithIsolation
   , transactionUndo
   , transactionUndoWithIsolation
+
+    -- * Raw SQL
+  , rawSql
+  , rawExecute
+  , rawExecuteCount
+
+    -- * Getting names
+  , getFieldName
+  , getTableName
 
     -- * Rendering queries to text
   , renderQueryDelete
