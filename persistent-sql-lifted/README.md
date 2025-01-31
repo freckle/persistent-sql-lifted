@@ -23,8 +23,14 @@ How to migrate from vanilla persistent/esqueleto:
 - Instead of calling `runSqlPool` directly from the rest of your application code,
   use the `runSqlTx` method from the `MonadSqlTx` class.
 
-  [checkpointCallStack]: https://hackage.haskell.org/package/annotated-exception-0.3.0.2/docs/Control-Exception-Annotated-UnliftIO.html
-  [esqueleto]: https://hackage.haskell.org/package/esqueleto
-  [persistent]: https://hackage.haskell.org/package/persistent
-  [runSqlPool]: https://hackage.haskell.org/package/persistent-2.14.6.3/docs/Database-Persist-Sql.html#v:runSqlPool
-  [SqlPersistT]: https://hackage.haskell.org/package/persistent-2.14.6.3/docs/Database-Persist-Sql.html#t:SqlPersistT
+For constructing SQL expressions, you may which to import the utilities from
+`Database.Persist.Sql.Lifted.Expression` et al rather than getting them from
+Esqueleto. This allows you to import the specific bits you need piecemeal and
+without having to hide the unlifted versions of query-running functions that this
+package replaces. Moreover, this package contains some additional utilities.
+
+[checkpointCallStack]: https://hackage.haskell.org/package/annotated-exception-0.3.0.2/docs/Control-Exception-Annotated-UnliftIO.html
+[esqueleto]: https://hackage.haskell.org/package/esqueleto
+[persistent]: https://hackage.haskell.org/package/persistent
+[runSqlPool]: https://hackage.haskell.org/package/persistent-2.14.6.3/docs/Database-Persist-Sql.html#v:runSqlPool
+[SqlPersistT]: https://hackage.haskell.org/package/persistent-2.14.6.3/docs/Database-Persist-Sql.html#t:SqlPersistT
