@@ -1,5 +1,5 @@
 name: persistent-sql-lifted
-version: 0.4.1.0
+version: 0.4.2.0
 
 maintainer: Freckle Education
 category: Database
@@ -54,6 +54,7 @@ default-extensions:
   - GADTs
   - NoImplicitPrelude
   - NoMonomorphismRestriction
+  - OverloadedStrings
 
 library:
   source-dirs: library
@@ -63,5 +64,7 @@ library:
     - esqueleto
     - mtl
     - persistent
+    - random
     - text
     - unliftio-core
+    - vector

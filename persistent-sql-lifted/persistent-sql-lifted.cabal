@@ -5,7 +5,7 @@ cabal-version: 1.18
 -- see: https://github.com/sol/hpack
 
 name:           persistent-sql-lifted
-version:        0.4.1.0
+version:        0.4.2.0
 synopsis:       Monad classes for running queries with Persistent and Esqueleto
 description:    This package introduces two classes: MonadSqlBackend for monadic contexts in
                 which a SqlBackend is available, and MonadSqlTx for contexts in which we
@@ -70,6 +70,7 @@ library
       Database.Persist.Sql.Lifted.Query.Locking
       Database.Persist.Sql.Lifted.Query.SetOperations
       Database.Persist.Sql.Lifted.Query.Update
+      Database.Persist.Sql.Lifted.Savepoint
       Database.Persist.Sql.Lifted.Update
   other-modules:
       Paths_persistent_sql_lifted
@@ -81,6 +82,7 @@ library
       GADTs
       NoImplicitPrelude
       NoMonomorphismRestriction
+      OverloadedStrings
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-monomorphism-restriction -Wno-prepositive-qualified-module -Wno-safe -Wno-unsafe
   build-depends:
       annotated-exception
@@ -89,8 +91,10 @@ library
     , esqueleto
     , mtl
     , persistent
+    , random
     , text
     , unliftio-core
+    , vector
   default-language: GHC2021
   if impl(ghc >= 9.8)
     ghc-options: -Wno-missing-role-annotations -Wno-missing-poly-kind-signatures
