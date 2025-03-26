@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.0.0...main)
+## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.1.0...main)
+
+## [v0.4.1.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.0.0...persistent-sql-lifted-v0.4.1.0)
+
+Add module `Database.Persist.Sql.Lifted.Expression.ArrayAggregate.PostgreSQL`
 
 ## [v0.4.0.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.3.0.0...persistent-sql-lifted-v0.4.0.0)
 

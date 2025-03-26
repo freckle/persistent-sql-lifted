@@ -2,3 +2,6 @@ resolver: lts-23.3
 
 packages:
   - persistent-sql-lifted
+
+extra-deps:
+  - esqueleto-3.6.0.0
