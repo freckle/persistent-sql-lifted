@@ -2,6 +2,8 @@ module Database.Persist.Sql.Lifted.Savepoint
   ( rollbackWhen
   ) where
 
+import Prelude ((-))
+
 import Control.Applicative (pure)
 import Control.Monad (replicateM)
 import Control.Monad.IO.Class (MonadIO)
@@ -18,7 +20,6 @@ import Database.Persist.Sql.Lifted.MonadSqlBackend (MonadSqlBackend)
 import Database.Persist.Sql.Lifted.Persistent (rawExecute)
 import GHC.Stack (HasCallStack)
 import System.Random (randomRIO)
-import Prelude ((-))
 
 --  | Create a new transaction @SAVEPOINT@, returning its name
 newSavepoint :: forall m. (HasCallStack, MonadSqlBackend m) => m Text

@@ -22,5 +22,5 @@ instance (HasSqlBackend r, MonadUnliftIO m) => MonadSqlBackend (ReaderT r m) whe
 
 -- | Generalize from 'SqlPersistT' to 'MonadSqlBackend'
 liftSql
-  :: forall m a. (MonadSqlBackend m, HasCallStack) => ReaderT SqlBackend m a -> m a
+  :: forall m a. (HasCallStack, MonadSqlBackend m) => ReaderT SqlBackend m a -> m a
 liftSql (ReaderT f) = checkpointCallStack $ getSqlBackendM >>= f

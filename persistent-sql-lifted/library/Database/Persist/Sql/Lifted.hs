@@ -127,10 +127,10 @@ import GHC.Stack (HasCallStack)
 -- | Update individual fields on a specific record
 update'
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> [Update a]
@@ -142,10 +142,10 @@ update' = Persistent.update
 -- This function will throw an exception if the given key is not found in the database.
 updateGetEntity
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> [Update a]
