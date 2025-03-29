@@ -38,13 +38,13 @@ import Database.Persist.Sql.Lifted.Core (MonadSqlBackend, SqlBackend, liftSql)
 import GHC.Stack (HasCallStack)
 
 -- | Execute an Esqueleto DELETE query
-delete :: forall m. (MonadSqlBackend m, HasCallStack) => SqlQuery () -> m ()
+delete :: forall m. (HasCallStack, MonadSqlBackend m) => SqlQuery () -> m ()
 delete q = liftSql $ E.delete q
 
 -- | Execute an Esqueleto DELETE query
 deleteCount
   :: forall m
-   . (MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m)
   => SqlQuery ()
   -> m Int64
   -- ^ The number of rows affected
@@ -55,10 +55,10 @@ deleteCount q = liftSql $ E.deleteCount q
 -- Does nothing if record does not exist.
 deleteKey
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> m ()
@@ -67,9 +67,9 @@ deleteKey k = liftSql $ E.deleteKey k
 -- | Insert a 'E.PersistField' for every selected value
 insertSelect
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
      )
   => SqlQuery (SqlExpr (Insertion a))
   -> m ()
@@ -78,9 +78,9 @@ insertSelect q = liftSql $ E.insertSelect q
 -- | Insert a 'PersistField' for every selected value, returning the count
 insertSelectCount
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
      )
   => SqlQuery (SqlExpr (Insertion a))
   -> m Int64
@@ -91,9 +91,9 @@ insertSelectCount q = liftSql $ E.insertSelectCount q
 --   that would be supplied to the database for @?@ placeholders
 renderQueryDelete
   :: forall a r m
-   . ( SqlSelect a r
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , SqlSelect a r
      )
   => SqlQuery a
   -- ^ SQL query to render
@@ -104,9 +104,9 @@ renderQueryDelete q = liftSql $ E.renderQueryDelete q
 --   that would be supplied to the database for @?@ placeholders
 renderQueryInsertInto
   :: forall a r m
-   . ( SqlSelect a r
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , SqlSelect a r
      )
   => SqlQuery a
   -- ^ SQL query to render
@@ -117,9 +117,9 @@ renderQueryInsertInto q = liftSql $ E.renderQueryInsertInto q
 --   that would be supplied to the database for @?@ placeholders
 renderQuerySelect
   :: forall a r m
-   . ( SqlSelect a r
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , SqlSelect a r
      )
   => SqlQuery a
   -- ^ SQL query to render
@@ -130,9 +130,9 @@ renderQuerySelect q = liftSql $ E.renderQuerySelect q
 --   that would be supplied to the database for @?@ placeholders
 renderQueryToText
   :: forall a r m
-   . ( SqlSelect a r
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , SqlSelect a r
      )
   => Mode
   -- ^ Whether to render as an SELECT, DELETE, etc.
@@ -149,9 +149,9 @@ renderQueryToText m q = liftSql $ E.renderQueryToText m q
 --   that would be supplied to the database for @?@ placeholders
 renderQueryUpdate
   :: forall a r m
-   . ( SqlSelect a r
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , SqlSelect a r
      )
   => SqlQuery a
   -- ^ SQL query to render
@@ -161,7 +161,7 @@ renderQueryUpdate q = liftSql $ E.renderQueryUpdate q
 -- | Execute an Esqueleto SELECT query
 select
   :: forall a r m
-   . (SqlSelect a r, MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m, SqlSelect a r)
   => SqlQuery a
   -> m [r]
   -- ^ A list of rows
@@ -170,7 +170,7 @@ select q = liftSql $ E.select q
 -- | Execute an Esqueleto SELECT query, getting only the first row
 selectOne
   :: forall a r m
-   . (SqlSelect a r, MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m, SqlSelect a r)
   => SqlQuery a
   -> m (Maybe r)
   -- ^ The first row, or 'Nothing' if no rows are selected
@@ -179,10 +179,10 @@ selectOne q = liftSql $ E.selectOne q
 -- | Execute an Esqueleto UPDATE query
 update
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => (SqlExpr (Entity a) -> SqlQuery ())
   -> m ()
@@ -191,10 +191,10 @@ update q = liftSql $ E.update q
 -- | Execute an Esqueleto UPDATE query, returning the count
 updateCount
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => (SqlExpr (Entity a) -> SqlQuery ())
   -> m Int64

@@ -16,7 +16,7 @@
       in
       rec {
         packages = {
-          fourmolu = freckle.fourmolu-0-13-x;
+          fourmolu = freckle.fourmolu-0-17-x;
           ghc = freckleLib.haskellBundle {
             ghcVersion = "ghc-9-8-4";
             enableHLS = true;
