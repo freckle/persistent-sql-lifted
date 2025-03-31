@@ -5,7 +5,7 @@ cabal-version: 1.18
 -- see: https://github.com/sol/hpack
 
 name:           persistent-sql-lifted
-version:        0.4.2.0
+version:        0.4.3.0
 synopsis:       Monad classes for running queries with Persistent and Esqueleto
 description:    This package introduces two classes: MonadSqlBackend for monadic contexts in
                 which a SqlBackend is available, and MonadSqlTx for contexts in which we

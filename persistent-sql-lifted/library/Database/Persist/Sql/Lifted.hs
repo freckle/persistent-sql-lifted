@@ -63,6 +63,7 @@ module Database.Persist.Sql.Lifted
   , updateCount
   , update'
   , updateGet
+  , updateGetEntity
   , updateWhere
   , updateWhereCount
 
@@ -114,22 +115,39 @@ module Database.Persist.Sql.Lifted
 #if MIN_VERSION_base(4,17,0)
 import Data.Type.Equality (type (~))
 #endif
+import Data.Functor ((<$>))
 import Database.Persist (Key, PersistEntity (PersistEntityBackend), Update)
 import Database.Persist.Sql.Lifted.Core
 import Database.Persist.Sql.Lifted.Esqueleto
 import Database.Persist.Sql.Lifted.Persistent hiding (delete, update)
 import Database.Persist.Sql.Lifted.Persistent qualified as Persistent
+import Database.Persist.Types (Entity (..))
 import GHC.Stack (HasCallStack)
 
 -- | Update individual fields on a specific record
 update'
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> [Update a]
   -> m ()
 update' = Persistent.update
+
+-- | Update individual fields on a specific record, and retrieve the updated 'Entity' from the database
+--
+-- This function will throw an exception if the given key is not found in the database.
+updateGetEntity
+  :: forall a m
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
+     )
+  => Key a
+  -> [Update a]
+  -> m (Entity a)
+updateGetEntity k us = Entity k <$> updateGet k us

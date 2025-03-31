@@ -12,4 +12,4 @@ import GHC.Stack (HasCallStack)
 --   provide one, e.g. from a connection pool.
 class (MonadSqlBackend db, MonadUnliftIO m) => MonadSqlTx db m | m -> db where
   -- | Runs the action in a SQL transaction
-  runSqlTx :: HasCallStack => db a -> m a
+  runSqlTx :: forall a. HasCallStack => db a -> m a

@@ -56,7 +56,8 @@ import Database.Esqueleto.PostgreSQL
 -- Also replaces the 'Maybe' result with an empty list, because really that's
 -- what you always want.
 arrayAggById
-  :: (PersistEntity val, PersistField [typ], PersistField typ)
+  :: forall val typ
+   . (PersistEntity val, PersistField [typ], PersistField typ)
   => SqlExpr (Entity val)
   -> EntityField val typ
   -> SqlExpr (Value [typ])
@@ -66,7 +67,8 @@ arrayAggById es f = arrayAggBy (es ^. f) (es ^. persistIdField)
 --
 -- If you're using '(?.)' instead of '(^.)', use this instead of 'arrayAggById'.
 arrayAggByIdMaybe
-  :: (PersistEntity val, PersistField typ)
+  :: forall val typ
+   . (PersistEntity val, PersistField typ)
   => SqlExpr (Maybe (Entity val))
   -> EntityField val typ
   -> SqlExpr (Value [typ])
@@ -77,14 +79,16 @@ arrayAggByIdMaybe es f =
 --
 -- If you're using '(?.)' instead of '(^.)', use this instead of 'arrayAggBy'.
 arrayAggByMaybe
-  :: (PersistField a, PersistField b)
+  :: forall a b
+   . (PersistField a, PersistField b)
   => SqlExpr (Value (Maybe a))
   -> SqlExpr (Value b)
   -> SqlExpr (Value [a])
 arrayAggByMaybe a = arrayRemoveNull . arrayAggBy a
 
 arrayAggBy
-  :: (PersistField [a], PersistField a, PersistField b)
+  :: forall a b
+   . (PersistField [a], PersistField a, PersistField b)
   => SqlExpr (Value a)
   -> SqlExpr (Value b)
   -> SqlExpr (Value [a])

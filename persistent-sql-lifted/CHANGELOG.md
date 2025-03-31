@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.2.0...main)
+## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.3.0...main)
+
+## [v0.4.3.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.2.0...persistent-sql-lifted-v0.4.3.0)
+
+Add `updateGetEntity`
 
 ## [v0.4.2.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.1.0...persistent-sql-lifted-v0.4.2.0)
 

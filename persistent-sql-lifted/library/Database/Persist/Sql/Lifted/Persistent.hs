@@ -88,10 +88,10 @@ import GHC.Stack (HasCallStack)
 --   and existing entities in the database
 checkUnique
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => a
   -> m (Maybe (Unique a))
@@ -104,10 +104,10 @@ checkUnique a = liftSql $ P.checkUnique a
 -- This is useful for updating because it ignores conflicts when the particular entity already exists.
 checkUniqueUpdateable
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Entity a
   -> m (Maybe (Unique a))
@@ -118,10 +118,10 @@ checkUniqueUpdateable e = liftSql $ P.checkUniqueUpdateable e
 -- | The total number of records fulfilling the given criteria
 count
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -133,10 +133,10 @@ count fs = liftSql $ P.count fs
 -- Does nothing if record does not exist.
 delete
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> m ()
@@ -147,10 +147,10 @@ delete k = liftSql $ P.delete k
 -- Does nothing if no record matches.
 deleteBy
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Unique a
   -> m ()
@@ -159,10 +159,10 @@ deleteBy u = liftSql $ P.deleteBy u
 -- | Delete all records matching the given criteria
 deleteWhere
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -172,10 +172,10 @@ deleteWhere fs = liftSql $ P.deleteWhere fs
 -- | Delete all records matching the given criteria
 deleteWhereCount
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -186,10 +186,10 @@ deleteWhereCount fs = liftSql $ P.deleteWhereCount fs
 -- | Check if there is at least one record fulfilling the given criteria
 exists
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -199,10 +199,10 @@ exists fs = liftSql $ P.exists fs
 -- | Check if a record with this unique key exists
 existsBy
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Unique a
   -> m Bool
@@ -211,10 +211,10 @@ existsBy u = liftSql $ P.existsBy u
 -- | Get a record by identifier, if available
 get
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> m (Maybe a)
@@ -223,10 +223,10 @@ get k = liftSql $ P.get k
 -- | Get a record by unique key, if available, returning both the identifier and the record
 getBy
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Unique a
   -> m (Maybe (Entity a))
@@ -237,10 +237,10 @@ getBy u = liftSql $ P.getBy u
 -- This function makes the most sense on entities with a single 'Unique' constructor.
 getByValue
   :: forall a m
-   . ( PersistEntityBackend a ~ SqlBackend
-     , AtLeastOneUniqueKey a
-     , MonadSqlBackend m
+   . ( AtLeastOneUniqueKey a
      , HasCallStack
+     , MonadSqlBackend m
+     , PersistEntityBackend a ~ SqlBackend
      )
   => a
   -> m (Maybe (Entity a))
@@ -250,10 +250,10 @@ getByValue a = liftSql $ P.getByValue a
 -- | Get a record by identifier, if available
 getEntity
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> m (Maybe (Entity a))
@@ -262,10 +262,10 @@ getEntity k = liftSql $ P.getEntity k
 -- | Get the SQL string for the field that an 'EntityField' represents
 getFieldName
   :: forall a t m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => EntityField a t
   -> m Text
@@ -276,10 +276,10 @@ getFieldName f = liftSql $ P.getFieldName f
 -- Unsafe unless your database is enforcing that the foreign key is valid.
 getJust
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> m a
@@ -290,10 +290,10 @@ getJust k = liftSql $ P.getJust k
 -- Unsafe unless your database is enforcing that the foreign key is valid.
 getJustEntity
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> m (Entity a)
@@ -302,10 +302,10 @@ getJustEntity k = liftSql $ P.getJustEntity k
 -- | Get many records by their respective identifiers, if available
 getMany
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Key a]
   -> m (Map (Key a) a)
@@ -313,17 +313,17 @@ getMany ks = liftSql $ P.getMany ks
 
 -- | Get the SQL string for the table that a 'PersistEntity' represents
 getTableName
-  :: forall a m. (PersistEntity a, MonadSqlBackend m, HasCallStack) => a -> m Text
+  :: forall a m. (HasCallStack, MonadSqlBackend m, PersistEntity a) => a -> m Text
 getTableName x = liftSql $ P.getTableName x
 
 -- | Create a new record in the database
 insert
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => a
   -> m (Key a)
@@ -333,11 +333,11 @@ insert a = liftSql $ P.insert a
 -- | Create a new record in the database
 insert_
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => a
   -> m ()
@@ -346,11 +346,11 @@ insert_ a = liftSql $ P.insert_ a
 -- | Insert a value, checking for conflicts with any unique constraints
 insertBy
   :: forall a m
-   . ( PersistEntityBackend a ~ SqlBackend
-     , AtLeastOneUniqueKey a
-     , SafeToInsert a
-     , MonadSqlBackend m
+   . ( AtLeastOneUniqueKey a
      , HasCallStack
+     , MonadSqlBackend m
+     , PersistEntityBackend a ~ SqlBackend
+     , SafeToInsert a
      )
   => a
   -> m (Either (Entity a) (Key a))
@@ -361,11 +361,11 @@ insertBy a = liftSql $ P.insertBy a
 -- | Create a new record in the database, returning an auto-increment ID and the inserted record
 insertEntity
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => a
   -> m (Entity a)
@@ -374,10 +374,10 @@ insertEntity a = liftSql $ P.insertEntity a
 -- | Create multiple records in the database, with specified keys
 insertEntityMany
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Entity a]
   -> m ()
@@ -386,10 +386,10 @@ insertEntityMany es = liftSql $ P.insertEntityMany es
 -- | Create a new record in the database using the given key
 insertKey
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> a
@@ -399,11 +399,11 @@ insertKey k a = liftSql $ P.insertKey k a
 -- | Create multiple records in the database and return their 'Key's
 insertMany
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => [a]
   -> m [Key a]
@@ -412,11 +412,11 @@ insertMany as = liftSql $ P.insertMany as
 -- | Create multiple records in the database
 insertMany_
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => [a]
   -> m ()
@@ -425,11 +425,11 @@ insertMany_ as = liftSql $ P.insertMany_ as
 -- | Create a new record in the database
 insertRecord
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => a
   -> m a
@@ -439,11 +439,11 @@ insertRecord a = liftSql $ P.insertRecord a
 -- | Create a new record in the database
 insertUnique
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => a
   -> m (Maybe (Key a))
@@ -454,11 +454,11 @@ insertUnique a = liftSql $ P.insertUnique a
 -- | Create a new record in the database
 insertUnique_
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => a
   -> m (Maybe ())
@@ -469,11 +469,11 @@ insertUnique_ a = liftSql $ P.insertUnique_ a
 -- | Create a new record in the database
 insertUniqueEntity
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => a
   -> m (Maybe (Entity a))
@@ -484,10 +484,10 @@ insertUniqueEntity a = liftSql $ P.insertUniqueEntity a
 -- | Return the single unique key for a record
 onlyUnique
   :: forall a m
-   . ( PersistEntityBackend a ~ SqlBackend
-     , OnlyOneUniqueKey a
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , OnlyOneUniqueKey a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => a
   -> m (Unique a)
@@ -499,11 +499,11 @@ onlyUnique a = liftSql $ P.onlyUnique a
 -- * Replace existing records (matching any unique constraint).
 putMany
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => [a]
   -- ^ A list of the records you want to insert or replace.
@@ -513,7 +513,7 @@ putMany as = liftSql $ P.putMany as
 -- | Execute a raw SQL statement
 rawExecute
   :: forall m
-   . (MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m)
   => Text
   -- ^ SQL statement, possibly with placeholders
   -> [PersistValue]
@@ -524,7 +524,7 @@ rawExecute t vs = liftSql $ P.rawExecute t vs
 -- | Execute a raw SQL statement
 rawExecuteCount
   :: forall m
-   . (MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m)
   => Text
   -- ^ SQL statement, possibly with placeholders
   -> [PersistValue]
@@ -535,7 +535,7 @@ rawExecuteCount t vs = liftSql $ P.rawExecuteCount t vs
 
 rawSql
   :: forall a m
-   . (RawSql a, MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m, RawSql a)
   => Text
   -- ^ SQL statement, possibly with placeholders
   -> [PersistValue]
@@ -548,10 +548,10 @@ rawSql sql vals = liftSql $ P.rawSql sql vals
 -- The result is undefined if such record does not exist.
 replace
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> a
@@ -563,11 +563,11 @@ replace k a = liftSql $ P.replace k a
 -- First query the unique fields to make sure the replacement maintains uniqueness constraints.
 replaceUnique
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
-     , Eq (Unique a)
-     , MonadSqlBackend m
+   . ( Eq (Unique a)
      , HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> a
@@ -581,10 +581,10 @@ replaceUnique k a = liftSql $ P.replaceUnique k a
 -- If a record with the given key does not exist then a new record will be inserted.
 repsert
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> a
@@ -596,10 +596,10 @@ repsert k a = liftSql $ P.repsert k a
 -- For each item, if a record with the given key does not exist then a new record will be inserted.
 repsertMany
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [(Key a, a)]
   -> m ()
@@ -608,10 +608,10 @@ repsertMany kas = liftSql $ P.repsertMany kas
 -- | Get just the first record for the criteria
 selectFirst
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -622,10 +622,10 @@ selectFirst fs os = liftSql $ P.selectFirst fs os
 -- | Get the 'Key's of all records matching the given criteria
 selectKeysList
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -635,10 +635,10 @@ selectKeysList fs os = liftSql $ P.selectKeysList fs os
 
 selectList
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -648,26 +648,26 @@ selectList
 selectList fs os = liftSql $ P.selectList fs os
 
 -- | Commit the current transaction and begin a new one
-transactionSave :: forall m. (MonadSqlBackend m, HasCallStack) => m ()
+transactionSave :: forall m. (HasCallStack, MonadSqlBackend m) => m ()
 transactionSave = liftSql P.transactionSave
 
 -- | Commit the current transaction and begin a new one
 transactionSaveWithIsolation
   :: forall m
-   . (MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m)
   => IsolationLevel
   -- ^ Isolation level
   -> m ()
 transactionSaveWithIsolation il = liftSql $ transactionSaveWithIsolation il
 
 -- | Roll back the current transaction and begin a new one
-transactionUndo :: forall m. (MonadSqlBackend m, HasCallStack) => m ()
+transactionUndo :: forall m. (HasCallStack, MonadSqlBackend m) => m ()
 transactionUndo = liftSql transactionUndo
 
 -- | Roll back the current transaction and begin a new one
 transactionUndoWithIsolation
   :: forall m
-   . (MonadSqlBackend m, HasCallStack)
+   . (HasCallStack, MonadSqlBackend m)
   => IsolationLevel
   -- ^ Isolation level
   -> m ()
@@ -676,10 +676,10 @@ transactionUndoWithIsolation il = liftSql $ transactionUndoWithIsolation il
 -- | Update individual fields on a specific record
 update
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> [Update a]
@@ -691,10 +691,10 @@ update k us = liftSql $ P.update k us
 -- This function will throw an exception if the given key is not found in the database.
 updateGet
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => Key a
   -> [Update a]
@@ -704,10 +704,10 @@ updateGet k us = liftSql $ P.updateGet k us
 -- | Update individual fields on any record matching the given criteria
 updateWhere
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -718,10 +718,10 @@ updateWhere fs us = liftSql $ P.updateWhere fs us
 -- | Update individual fields on any record matching the given criteria
 updateWhereCount
   :: forall a m
-   . ( PersistEntity a
-     , PersistEntityBackend a ~ SqlBackend
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , PersistEntity a
+     , PersistEntityBackend a ~ SqlBackend
      )
   => [Filter a]
   -- ^ If you provide multiple values in the list, the conditions are ANDed together.
@@ -737,11 +737,11 @@ updateWhereCount fs us = liftSql $ P.updateWhereCount fs us
 --   existing record with the parameters which is passed on as list to the function.
 upsert
   :: forall a m
-   . ( PersistEntityBackend a ~ SqlBackend
-     , SafeToInsert a
-     , OnlyOneUniqueKey a
+   . ( HasCallStack
      , MonadSqlBackend m
-     , HasCallStack
+     , OnlyOneUniqueKey a
+     , PersistEntityBackend a ~ SqlBackend
+     , SafeToInsert a
      )
   => a
   -- ^ New record to insert
@@ -757,11 +757,11 @@ upsert a us = liftSql $ P.upsert a us
 -- * Update the existing record that matches the given uniqueness constraint.
 upsertBy
   :: forall a m
-   . ( PersistEntity a
+   . ( HasCallStack
+     , MonadSqlBackend m
+     , PersistEntity a
      , PersistEntityBackend a ~ SqlBackend
      , SafeToInsert a
-     , MonadSqlBackend m
-     , HasCallStack
      )
   => Unique a
   -- ^ Uniqueness constraint to find by
