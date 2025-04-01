@@ -658,11 +658,11 @@ transactionSaveWithIsolation
   => IsolationLevel
   -- ^ Isolation level
   -> m ()
-transactionSaveWithIsolation il = liftSql $ transactionSaveWithIsolation il
+transactionSaveWithIsolation il = liftSql $ P.transactionSaveWithIsolation il
 
 -- | Roll back the current transaction and begin a new one
 transactionUndo :: forall m. (HasCallStack, MonadSqlBackend m) => m ()
-transactionUndo = liftSql transactionUndo
+transactionUndo = liftSql P.transactionUndo
 
 -- | Roll back the current transaction and begin a new one
 transactionUndoWithIsolation
@@ -671,7 +671,7 @@ transactionUndoWithIsolation
   => IsolationLevel
   -- ^ Isolation level
   -> m ()
-transactionUndoWithIsolation il = liftSql $ transactionUndoWithIsolation il
+transactionUndoWithIsolation il = liftSql $ P.transactionUndoWithIsolation il
 
 -- | Update individual fields on a specific record
 update
