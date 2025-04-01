@@ -1,4 +1,12 @@
-## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.3.0...main)
+## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.3.1...main)
+
+## [v0.4.3.1](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.3.0...persistent-sql-lifted-v0.4.3.1)
+
+Fixes [#16](https://github.com/freckle/persistent-sql-lifted/issues/16), nonterminating recursion in:
+
+- `transactionSaveWithIsolation`
+- `transactionUndo`
+- `transactionUndoWithIsolation`
 
 ## [v0.4.3.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.2.0...persistent-sql-lifted-v0.4.3.0)
 
