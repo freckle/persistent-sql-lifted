@@ -38,6 +38,8 @@ module Database.Persist.Sql.Lifted
   , selectList
 
     -- * Selecting counts/existence
+  , selectCount
+  , selectExists
   , count
   , exists
   , existsBy
@@ -115,12 +117,21 @@ module Database.Persist.Sql.Lifted
 #if MIN_VERSION_base(4,17,0)
 import Data.Type.Equality (type (~))
 #endif
-import Data.Functor ((<$>))
+import Prelude (Integral)
+
+import Control.Applicative (pure)
+import Data.Bool (Bool (..))
+import Data.Function (($))
+import Data.Functor (($>), (<$>))
+import Data.Maybe (maybe)
+import Database.Esqueleto.Experimental (PersistField, Value (..), countRows)
 import Database.Persist (Key, PersistEntity (PersistEntityBackend), Update)
 import Database.Persist.Sql.Lifted.Core
 import Database.Persist.Sql.Lifted.Esqueleto
+import Database.Persist.Sql.Lifted.Expression qualified as SqlExpr
 import Database.Persist.Sql.Lifted.Persistent hiding (delete, update)
 import Database.Persist.Sql.Lifted.Persistent qualified as Persistent
+import Database.Persist.Sql.Lifted.Query (SqlQuery)
 import Database.Persist.Types (Entity (..))
 import GHC.Stack (HasCallStack)
 
@@ -151,3 +162,17 @@ updateGetEntity
   -> [Update a]
   -> m (Entity a)
 updateGetEntity k us = Entity k <$> updateGet k us
+
+-- | Get only the number of rows that a 'SqlQuery' would select
+selectCount
+  :: forall a m
+   . (HasCallStack, Integral a, MonadSqlBackend m, PersistField a)
+  => SqlQuery ()
+  -> m a
+selectCount q =
+  maybe 0 unValue <$> selectOne (q $> countRows)
+
+-- | Get whether a 'SqlQuery' would select anything
+selectExists
+  :: forall m. (HasCallStack, MonadSqlBackend m) => SqlQuery () -> m Bool
+selectExists q = maybe False unValue <$> selectOne (pure $ SqlExpr.exists q)

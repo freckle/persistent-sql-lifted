@@ -1,0 +1,4 @@
+resolver: lts-24.2
+
+packages:
+  - persistent-sql-lifted
