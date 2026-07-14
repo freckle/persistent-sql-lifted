@@ -1,6 +1,10 @@
 module Database.Persist.Sql.Lifted.Expression
-  ( -- * Type
+  ( -- * Expression type
     SqlExpr
+
+    -- * Result types
+  , Value (..)
+  , deriveEsqueletoRecord
 
     -- * Constant
   , val
@@ -117,6 +121,8 @@ module Database.Persist.Sql.Lifted.Expression
   , (/=.)
   ) where
 
+import Database.Esqueleto.Experimental (Value (..))
+import Database.Esqueleto.Record (deriveEsqueletoRecord)
 import Database.Persist.Sql.Lifted.Expression.Bool
 import Database.Persist.Sql.Lifted.Expression.Case
 import Database.Persist.Sql.Lifted.Expression.Comparison

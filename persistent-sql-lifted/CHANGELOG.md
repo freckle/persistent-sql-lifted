@@ -1,4 +1,15 @@
-## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.4.0...main)
+## [_Unreleased_](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.5.0...main)
+
+## [v0.4.5.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.4.0...persistent-sql-lifted-v0.4.5.0)
+
+Add to `Database.Persist.Sql.Lifted`:
+
+- `Entity(..)`
+
+Add to `Database.Persist.Sql.Lifted.Expression`:
+
+- `Value(..)`
+- `deriveEsqueletoRecord`
 
 ## [v0.4.4.0](https://github.com/freckle/persistent-sql-lifted/compare/persistent-sql-lifted-v0.4.3.1...persistent-sql-lifted-v0.4.4.0)
 
