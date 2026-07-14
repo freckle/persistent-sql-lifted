@@ -20,6 +20,7 @@ module Database.Persist.Sql.Lifted
   , SqlBackend
   , MonadSqlBackend (..)
   , liftSql
+  , Entity (..)
 
     -- * Getting by key
   , get
